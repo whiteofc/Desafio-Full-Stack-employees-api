@@ -1,7 +1,10 @@
+import { Knowledgment } from 'src/shared/entities/knowledgment.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,6 +31,12 @@ export class Employee {
 
   @Column({ nullable: true })
   phone: string;
+
+  @ManyToMany(() => Knowledgment, (knowledgment) => knowledgment.employees)
+  @JoinTable({
+    name: 'employee_knowledgment',
+  })
+  knowledgments: Knowledgment[];
 
   @Column({
     type: 'enum',
