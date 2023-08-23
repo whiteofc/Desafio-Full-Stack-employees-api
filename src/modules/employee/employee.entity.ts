@@ -1,0 +1,54 @@
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+export enum EmployeeStatus {
+  WAITING = 'waiting',
+  VALID = 'valid',
+  INVALID = 'invalid',
+}
+
+@Entity('employee')
+export class Employee {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  cpf: string;
+
+  @Column({ nullable: true })
+  phone: string;
+
+  @Column({
+    type: 'enum',
+    enum: EmployeeStatus,
+    default: EmployeeStatus.WAITING,
+  })
+  status: EmployeeStatus;
+
+  @Column({ nullable: true })
+  validatedAt: Date;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
+}
