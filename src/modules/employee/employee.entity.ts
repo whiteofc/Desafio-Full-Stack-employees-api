@@ -32,7 +32,9 @@ export class Employee {
   @Column({ nullable: true })
   phone: string;
 
-  @ManyToMany(() => Knowledgment, (knowledgment) => knowledgment.employees)
+  @ManyToMany(() => Knowledgment, (knowledgment) => knowledgment.employees, {
+    eager: true,
+  })
   @JoinTable({
     name: 'employee_knowledgment',
   })
