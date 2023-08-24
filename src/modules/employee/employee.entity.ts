@@ -1,4 +1,4 @@
-import { Knowledgment } from 'src/shared/entities/knowledgment.entity';
+import { Knowledgment } from '../knowledgment/knowledgment.entity';
 import {
   Column,
   CreateDateColumn,

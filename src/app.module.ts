@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './services/typeorm.service';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { KnowledgmentModule } from './modules/knowledgment/knowledgment.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EmployeeModule } from './modules/employee/employee.module';
       useClass: TypeOrmConfigService,
     }),
     EmployeeModule,
+    KnowledgmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
