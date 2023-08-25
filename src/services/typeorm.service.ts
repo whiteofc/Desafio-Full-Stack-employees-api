@@ -1,7 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common/decorators/core';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { DataSourceOptions } from 'typeorm';
+import { TypeOrmOptionsFactory } from '@nestjs/typeorm/dist/interfaces';
+import { DataSourceOptions } from 'typeorm/data-source/DataSourceOptions';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -16,7 +16,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.config.get<string>('DATABASE_NAME'),
       username: this.config.get<string>('DATABASE_USER'),
       password: this.config.get<string>('DATABASE_PASSWORD'),
-      entities: ['dist/**/modules/**/*.entity.{ts,js}'],
+      entities: [
+        'dist/**/modules/**/*.entity.{ts,js}',
+        'dist/**/**/entities/*.entity.{ts,js}',
+      ],
       migrations: ['dist/migrations/*.{ts,js}'],
       synchronize: true, // never use TRUE in production!
     };
