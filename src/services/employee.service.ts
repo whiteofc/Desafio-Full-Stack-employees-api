@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from '../modules/employee/employee.entity';
 import { Repository } from 'typeorm';
-import EmployeeDto from 'src/shared/dtos/employee.dto';
-import { Knowledgment } from 'src/modules/knowledgment/knowledgment.entity';
+import { Knowledgment } from '../modules/knowledgment/knowledgment.entity';
+import EmployeeDto from '../shared/dtos/employee.dto';
+import { validate } from 'class-validator';
 
 @Injectable()
 export class EmployeeService {
@@ -24,7 +25,17 @@ export class EmployeeService {
     });
   }
 
-  async createEmployee(employee: EmployeeDto): Promise<Employee> {
+  async createEmployee(employeeData: EmployeeDto): Promise<Employee> {
+    const employee = new EmployeeDto(employeeData);
+
+    await validate(employee).then(async (errors) => {
+      if (errors.length > 0) {
+        throw {
+          message: errors.map((error) => error.constraints),
+        };
+      }
+    });
+
     const savedEmployee = this.employeeRepository.create(employee);
     savedEmployee.knowledgments = [];
 

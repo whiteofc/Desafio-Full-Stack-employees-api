@@ -35,6 +35,4 @@ export default class EmployeeDto {
     message: 'O funcionário deve ter no máximo 3 conhecimentos.',
   })
   knowledgmentIds: number[];
-
-  knowledgments: any[];
 }

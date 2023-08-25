@@ -1,3 +1,4 @@
+import { MaxLength } from 'class-validator';
 import { Knowledgment } from '../knowledgment/knowledgment.entity';
 import {
   Column,
@@ -21,9 +22,15 @@ export class Employee {
   id: number;
 
   @Column()
+  @MaxLength(100, {
+    message: 'O nome deve ter no máximo 100 caracteres',
+  })
   name: string;
 
   @Column()
+  @MaxLength(100, {
+    message: 'O email deve ter no máximo 100 caracteres',
+  })
   email: string;
 
   @Column()
