@@ -45,4 +45,24 @@ export class EmployeeController {
       );
     }
   }
+
+  @Post('/approve/:id')
+  async approveEmployee(@Param('id') id: number, @Body() valid: boolean) {
+    try {
+      await this.employeeService.approveEmployee(id, valid);
+      return {
+        status: 200,
+        message: 'Employee approved successfully',
+      };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: error,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }

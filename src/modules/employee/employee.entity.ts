@@ -33,7 +33,9 @@ export class Employee {
   })
   email: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   cpf: string;
 
   @Column({ nullable: true })
