@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { EmployeeService } from '../../services/employee.service';
 import EmployeeDto from 'src/shared/dtos/employee.dto';
@@ -15,8 +16,9 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Get('/')
-  async getEmployees() {
-    const employees = await this.employeeService.getEmployees();
+  async getEmployees(@Query() query: any) {
+    console.log(query);
+    const employees = await this.employeeService.getEmployees(query);
     return employees;
   }
 
@@ -47,9 +49,9 @@ export class EmployeeController {
   }
 
   @Post('/approve/:id')
-  async approveEmployee(@Param('id') id: number, @Body() valid: boolean) {
+  async approveEmployee(@Param('id') id: number, @Body() data: any) {
     try {
-      await this.employeeService.approveEmployee(id, valid);
+      await this.employeeService.approveEmployee(id, data.valid);
       return {
         status: 200,
         message: 'Employee approved successfully',
