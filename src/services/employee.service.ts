@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Employee } from '../modules/employee/employee.entity';
+import { Employee, EmployeeStatus } from '../modules/employee/employee.entity';
 import { Repository } from 'typeorm';
 import { Knowledgment } from '../modules/knowledgment/knowledgment.entity';
 import EmployeeDto from '../shared/dtos/employee.dto';
@@ -48,6 +48,23 @@ export class EmployeeService {
       }),
     );
 
+    console.log(savedEmployee);
+
     return this.employeeRepository.save(savedEmployee);
+  }
+
+  async approveEmployee(employeeId: number, valid): Promise<Employee> {
+    const employee = await this.employeeRepository.findOneOrFail({
+      where: { id: employeeId },
+    });
+
+    employee.status =
+      valid == true ? EmployeeStatus.VALID : EmployeeStatus.INVALID;
+
+    employee.validatedAt = new Date();
+
+    const savedEmployee = await this.employeeRepository.save(employee);
+
+    return savedEmployee;
   }
 }
