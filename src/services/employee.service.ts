@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee, EmployeeStatus } from '../modules/employee/employee.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Knowledgment } from '../modules/knowledgment/knowledgment.entity';
 import EmployeeDto from '../shared/dtos/employee.dto';
 import { validate } from 'class-validator';
@@ -15,8 +15,39 @@ export class EmployeeService {
     private readonly knowledgmentRepository: Repository<Knowledgment>,
   ) {}
 
-  getEmployees(): Promise<Employee[]> {
-    return this.employeeRepository.find();
+  async getEmployees(query: any): Promise<Employee[]> {
+    const whereQuery: any = {};
+
+    if (query.name) {
+      whereQuery.name = ILike(`%${query.name}%`);
+    }
+    if (query.status) {
+      whereQuery.status = query.status;
+    }
+    if (query.email) {
+      whereQuery.email = ILike(`%${query.email}%`);
+    }
+    if (query.cpf) {
+      whereQuery.cpf = ILike(`%${query.cpf}%`);
+    }
+    if (query.knowledgmentId) {
+      return this.employeeRepository
+        .createQueryBuilder()
+        .innerJoinAndSelect('Employee.knowledgments', 'knowledgments')
+        .orderBy('LOWER(Employee.name)', 'ASC')
+        .where(whereQuery)
+        .andWhere('knowledgments.id = :knowledgmentId', {
+          knowledgmentId: query.knowledgmentId,
+        })
+        .getMany();
+    }
+
+    return this.employeeRepository
+      .createQueryBuilder()
+      .innerJoinAndSelect('Employee.knowledgments', 'knowledgments')
+      .orderBy('LOWER(Employee.name)', 'ASC')
+      .where(whereQuery)
+      .getMany();
   }
 
   getEmployee(id: number): Promise<Employee> {
