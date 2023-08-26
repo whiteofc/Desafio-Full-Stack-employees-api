@@ -30,32 +30,27 @@
 
 ```bash
 $ npm install
+
+- Create a Database with the name: mesha_employees
+- Create a .env.local variable in the project root with the following data: 
+DATABASE_HOST=localhost
+DATABASE_NAME=mesha_employees
+DATABASE_USER={YOUR-DB-USERNAME}
+DATABASE_PASSWORD={YOUR-DB-PASSWORD}
+DATABASE_PORT=5432
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+With the server running for the first time, run in another terminal window:
 
-## Test
+$ npm run seed
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+DONE! you are ready to create and validate employees! :🤠:
 ```
 
 ## Support
